@@ -33,7 +33,7 @@ const OnboardingSettings = ({ onComplete }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="screen"
-      style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+      style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', overflowY: 'auto' }}
     >
       <div className="card" style={{ width: '100%', maxWidth: '480px', padding: '2rem', textAlign: 'center' }}>
         <h1 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>📚 VAMOS COMEÇAR!</h1>
