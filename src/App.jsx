@@ -16,7 +16,7 @@ import AuthScreen from './components/AuthScreen';
 import OnboardingSettings from './components/OnboardingSettings';
 
 function App() {
-  const settings = settingsService.getConfig();
+  const [settings, setSettings] = useState(settingsService.getConfig());
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [screen, setScreen] = useState('intro'); 
@@ -46,6 +46,9 @@ function App() {
   };
 
   useEffect(() => {
+    const syncConfig = () => setSettings(settingsService.getConfig());
+    window.addEventListener('configUpdated', syncConfig);
+    
     supabaseService.getSession().then(session => {
       setSession(session);
       if (!session) {
@@ -55,6 +58,8 @@ function App() {
       }
       setLoading(false);
     });
+
+    return () => window.removeEventListener('configUpdated', syncConfig);
   }, [settings.childName]);
 
   const startAdventure = () => {
