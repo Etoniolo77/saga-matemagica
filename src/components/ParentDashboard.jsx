@@ -69,7 +69,18 @@ const ParentDashboard = ({ onBack, onLogout }) => {
   };
 
   return (
-    <div className="screen" style={{ padding: '1rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ 
+      width: '100%', 
+      minHeight: '100vh', 
+      height: 'auto',
+      overflowY: 'auto', 
+      WebkitOverflowScrolling: 'touch',
+      padding: '1rem', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center',
+      background: '#e2e8f0'
+    }}>
       
       {/* Marcador de Versão para Debug */}
       <div style={{ background: '#000', color: '#fff', padding: '5px 15px', borderRadius: '20px', marginBottom: '1rem', fontSize: '0.8rem', fontWeight: 'bold' }}>
