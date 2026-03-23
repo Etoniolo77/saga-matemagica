@@ -71,6 +71,26 @@ class SupabaseService {
     if (error) throw error;
     return data; // Retorna true se a chave foi validada e usada, false se for inválida
   }
+
+  // Listar todas as chaves (Para o seu controle de adm)
+  async getLicenseKeys() {
+    const { data, error } = await supabase
+      .from('license_keys')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return data;
+  }
+
+  // Criar uma nova chave manualmente
+  async createLicenseKey(key) {
+    const { data, error } = await supabase
+      .from('license_keys')
+      .insert({ key })
+      .select();
+    if (error) throw error;
+    return data;
+  }
 }
 
 export const supabaseService = new SupabaseService();

@@ -1,8 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { settingsService } from '../services/SettingsService';
+import { supabaseService } from '../services/SupabaseService';
 
 const ParentDashboard = ({ onBack, onLogout }) => {
   const [config, setConfig] = useState(settingsService.getConfig());
+  const [keys, setKeys] = useState([]);
+  const [loadingKeys, setLoadingKeys] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    checkAdmin();
+    loadKeys();
+  }, []);
+
+  const checkAdmin = async () => {
+    const session = await supabaseService.getSession();
+    if (session?.user?.email === 'evandro.toniolo@gmail.com') {
+      setIsAdmin(true);
+    }
+  };
+
+  const loadKeys = async () => {
+    try {
+      setLoadingKeys(true);
+      const data = await supabaseService.getLicenseKeys();
+      setKeys(data || []);
+    } catch (err) {
+      console.error("Erro ao listar chaves:", err);
+    } finally {
+      setLoadingKeys(false);
+    }
+  };
+
+  const generateNewKey = async () => {
+    try {
+      const code = 'SAGA-' + Math.random().toString(36).substring(2, 6).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      await supabaseService.createLicenseKey(code);
+      alert('SUCESSO! ✨ Chave Criada: ' + code);
+      loadKeys();
+    } catch (err) {
+      alert('Erro ao criar chave.');
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    alert('Código Copiado! ✅ Mande para o cliente no WhatsApp.');
+  };
 
   const handleSave = () => {
     settingsService.updateConfig(config);
@@ -98,6 +142,58 @@ const ParentDashboard = ({ onBack, onLogout }) => {
           </section>
         </div>
 
+        {/* GESTÃO DE LICENÇAS (APENAS PARA O DONO DO APP) */}
+        {isAdmin && (
+          <div style={{ marginTop: '2.5rem', borderTop: '4px solid #000', paddingTop: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: '1.5rem', margin: 0 }}>📦 GESTÃO DE LICENÇAS (VENDAS)</h2>
+              <button 
+                onClick={generateNewKey}
+                style={{ background: '#00B2FF', color: 'white', padding: '0.8rem 1.2rem', borderRadius: '12px', border: '3px solid #000', fontWeight: 'bold' }}
+              >
+                ✨ GERAR NOVA CHAVE
+              </button>
+            </div>
+
+            <div style={{ maxHeight: '300px', overflowY: 'auto', background: '#f8fafc', border: '2px solid #000', borderRadius: '12px', padding: '1rem' }}>
+              {loadingKeys ? <p>Carregando chaves...</p> : (
+                keys.length === 0 ? <p style={{ textAlign: 'center', opacity: 0.6 }}>Nenhuma chave gerada ainda.</p> : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                    {keys.map(k => (
+                      <div 
+                        key={k.id} 
+                        style={{ 
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+                          padding: '0.8rem', background: '#fff', border: '2px solid #cbd5e1', borderRadius: '8px'
+                        }}
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <code style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#1e293b' }}>{k.key}</code>
+                          <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>Criada em: {new Date(k.created_at).toLocaleDateString()}</span>
+                        </div>
+                        
+                        {k.used_at ? (
+                          <div style={{ textAlign: 'right' }}>
+                            <span style={{ background: '#fef2f2', color: '#ef4444', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', border: '1px solid currentColor' }}>USADA 🔐</span>
+                            <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>Por: {k.used_by_email}</div>
+                          </div>
+                        ) : (
+                          <button 
+                            onClick={() => copyToClipboard(k.key)}
+                            style={{ background: '#00E676', color: 'white', padding: '0.5rem 1rem', borderRadius: '8px', border: '2px solid #000' }}
+                          >
+                            📋 COPIAR
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )
+              )}
+            </div>
+            <p style={{ fontSize: '0.8rem', opacity: 0.6, marginTop: '0.5rem' }}>* Cada chave é única e só pode ser usada uma vez para criar uma nova conta.</p>
+          </div>
+        )}
 
         <div style={{ marginTop: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <button onClick={handleSave} className="btn-primary" style={{ width: '100%' }}>💾 SALVAR TUDO</button>
