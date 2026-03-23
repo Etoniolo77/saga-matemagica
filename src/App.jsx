@@ -18,21 +18,27 @@ import OnboardingSettings from './components/OnboardingSettings';
 function App() {
   const settings = settingsService.getConfig();
   const [session, setSession] = useState(null);
-  const [screen, setScreen] = useState(!settings.childName ? 'profile' : 'intro'); 
-  // intro | map | quest | bank | store | parent | profile | auth
-  const [currentQuest, setCurrentQuest] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [screen, setScreen] = useState('intro'); 
   
   // HUD states bound to GameManager
   const [lives, setLives] = useState(gameManager.lives);
   const [energy, setEnergy] = useState(gameManager.energy);
   const [balance, setBalance] = useState(gameManager.balance);
   const [remainingSkips, setRemainingSkips] = useState(gameManager.checkAndResetSkips());
+  const [currentQuest, setCurrentQuest] = useState(null);
 
   useEffect(() => {
     supabaseService.getSession().then(session => {
       setSession(session);
+      if (!session) {
+        setScreen('auth');
+      } else if (!settings.childName) {
+        setScreen('profile');
+      }
+      setLoading(false);
     });
-  }, []);
+  }, [settings.childName]);
 
   const startAdventure = () => {
     const config = settingsService.getConfig();
@@ -48,50 +54,71 @@ function App() {
   const handleLogout = async () => {
     await supabaseService.signOut();
     setSession(null);
-    setScreen('intro');
+    setScreen('auth');
   };
 
   const handleLevelComplete = () => {
-    // Refresh stats
     setEnergy(gameManager.energy);
     setLives(gameManager.lives);
     setBalance(gameManager.balance);
     setRemainingSkips(gameManager.checkAndResetSkips());
     
-    // Get next question immediately
     const nextQ = gameManager.getNextQuestion();
     setCurrentQuest(nextQ);
   };
 
   const handlePurchase = (itemName, price) => {
     if (gameManager.buyItem(itemName, price)) {
-      setBalance(gameManager.balance); // Atualiza vivo no display assim que clica!
+      setBalance(gameManager.balance);
     }
   };
+
+  if (loading) return <div className="screen" style={{display:'flex', alignItems:'center', justifyContent:'center'}}><h1>CARREGANDO...</h1></div>;
 
   return (
     <div className="app-container">
       <AnimatePresence mode="wait">
-        {screen === 'intro' && <IntroScreen key="intro" onStart={startAdventure} onParentAccess={() => setScreen('parent')} />}
-        {screen === 'map' && <MapScreen key="map" onSelectWorld={startWorld} onOpenBank={() => setScreen('bank')} onOpenStore={() => setScreen('store')} energy={energy} lives={lives} balance={balance} />}
-        {screen === 'bank' && <BankScreen key="bank" onBack={() => setScreen('quest')} balance={balance} history={gameManager.history} />}
-        {screen === 'store' && <StoreScreen key="store" onBack={() => setScreen('quest')} balance={balance} onPurchase={handlePurchase} />}
-        {screen === 'parent' && session && (
-          <ParentDashboard key="parent" onBack={() => setScreen('intro')} onLogout={handleLogout} />
-        )}
-        {screen === 'parent' && !session && (
+        {screen === 'auth' && (
           <AuthScreen 
             key="auth" 
-            onAuthSuccess={() => {
-              supabaseService.getSession().then(s => { setSession(s); setScreen('parent'); });
+            onAuthSuccess={(s) => {
+              setSession(s);
+              setScreen(!settings.childName ? 'profile' : 'intro');
             }} 
-            onBack={() => setScreen('intro')} 
+            onBack={() => setScreen('auth')} 
           />
         )}
-        {screen === 'onboarding' && (
-          <OnboardingSettings key="onboarding" onComplete={startAdventure} />
+        
+        {screen === 'intro' && session && (
+          <IntroScreen 
+            key="intro" 
+            onStart={startAdventure} 
+            onParentAccess={() => setScreen('parent')} 
+          />
         )}
-        {screen === 'profile' && <ChildProfileScreen key="profile" onComplete={() => setScreen('intro')} />}
+
+        {screen === 'parent' && session && (
+          <ParentDashboard 
+            key="parent" 
+            onBack={() => setScreen('intro')} 
+            onLogout={handleLogout} 
+          />
+        )}
+
+        {screen === 'onboarding' && (
+          <OnboardingSettings 
+            key="onboarding" 
+            onComplete={startAdventure} 
+          />
+        )}
+
+        {screen === 'profile' && session && (
+          <ChildProfileScreen 
+            key="profile" 
+            onComplete={() => setScreen('intro')} 
+          />
+        )}
+
         {screen === 'quest' && currentQuest && (
           <QuestCard 
             key={currentQuest.id}
@@ -116,9 +143,16 @@ function App() {
             onOpenStore={() => setScreen('store')}
             onExit={() => setScreen('intro')}
             onChangeSubject={() => setScreen('onboarding')}
-            syncStats={() => { setEnergy(gameManager.energy); setLives(gameManager.lives); setBalance(gameManager.balance); }}
+            syncStats={() => { 
+                setEnergy(gameManager.energy); 
+                setLives(gameManager.lives); 
+                setBalance(gameManager.balance); 
+            }}
           />
         )}
+
+        {screen === 'bank' && <BankScreen key="bank" onBack={() => setScreen('quest')} balance={balance} history={gameManager.history} />}
+        {screen === 'store' && <StoreScreen key="store" onBack={() => setScreen('quest')} balance={balance} onPurchase={handlePurchase} />}
       </AnimatePresence>
     </div>
   );
