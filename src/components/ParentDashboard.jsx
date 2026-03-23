@@ -14,8 +14,11 @@ const ParentDashboard = ({ onBack, onLogout }) => {
   }, []);
 
   const checkAdmin = async () => {
-    // Liberado temporariamente para teste do usuário confirmar visibilidade!
-    setIsAdmin(true);
+    const session = await supabaseService.getSession();
+    const userEmail = session?.user?.email?.toLowerCase();
+    if (userEmail === 'evandro.toniolo@gmail.com') {
+      setIsAdmin(true);
+    }
   };
 
   const loadKeys = async () => {
@@ -82,11 +85,6 @@ const ParentDashboard = ({ onBack, onLogout }) => {
       background: '#e2e8f0'
     }}>
       
-      {/* Marcador de Versão para Debug */}
-      <div style={{ background: '#000', color: '#fff', padding: '5px 15px', borderRadius: '20px', marginBottom: '1rem', fontSize: '0.8rem', fontWeight: 'bold' }}>
-        🚀 VERSÃO V2 - ATUALIZADA
-      </div>
-
       <div className="card" style={{ width: '100%', maxWidth: '600px', padding: '1.5rem', marginBottom: '4rem' }}>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '4px solid #000', paddingBottom: '0.5rem' }}>
