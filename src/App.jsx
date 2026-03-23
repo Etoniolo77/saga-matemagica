@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { settingsService } from './services/SettingsService';
 import { gameManager } from './game_logic';
 import { supabaseService } from './services/SupabaseService';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Screens
 import IntroScreen from './components/IntroScreen';
