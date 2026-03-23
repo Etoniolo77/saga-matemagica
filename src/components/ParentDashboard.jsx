@@ -14,7 +14,7 @@ const ParentDashboard = ({ onBack, onLogout }) => {
   }, []);
 
   const checkAdmin = async () => {
-    // Liberado temporariamente para teste do usuário!
+    // Liberado temporariamente para teste do usuário confirmar visibilidade!
     setIsAdmin(true);
   };
 
@@ -49,13 +49,16 @@ const ParentDashboard = ({ onBack, onLogout }) => {
   const handleSave = () => {
     settingsService.updateConfig(config);
     alert('✅ CONFIGURAÇÕES SALVAS!');
+    // Disparar evento para outros componentes se necessário
+    window.dispatchEvent(new Event('configUpdated'));
   };
 
   const toggleSubject = (subject) => {
-    const newSubjects = config.activeSubjects.includes(subject)
-      ? config.activeSubjects.filter(s => s !== subject)
-      : [...config.activeSubjects, subject];
-    setConfig({ ...config, activeSubjects: newSubjects });
+    const active_subjects = config.active_subjects || [];
+    const newSubjects = active_subjects.includes(subject)
+      ? active_subjects.filter(s => s !== subject)
+      : [...active_subjects, subject];
+    setConfig({ ...config, active_subjects: newSubjects });
   };
 
   const handleUpdateStoreItem = (id, field, value) => {
@@ -66,122 +69,112 @@ const ParentDashboard = ({ onBack, onLogout }) => {
   };
 
   return (
-    <div className="screen" style={{ padding: '2rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-      <div className="card" style={{ width: '100%', maxWidth: '800px', padding: '2rem', marginBottom: '4rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '4px solid #000', paddingBottom: '1rem' }}>
-          <h1 style={{ margin: 0, fontSize: '2rem' }}>🛠️ PAINEL</h1>
-          <button onClick={onLogout} className="btn-secondary" style={{ background: '#ef4444', color: 'white' }}>SAIR</button>
+    <div className="screen" style={{ padding: '1rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      
+      {/* Marcador de Versão para Debug */}
+      <div style={{ background: '#000', color: '#fff', padding: '5px 15px', borderRadius: '20px', marginBottom: '1rem', fontSize: '0.8rem', fontWeight: 'bold' }}>
+        🚀 VERSÃO V2 - ATUALIZADA
+      </div>
+
+      <div className="card" style={{ width: '100%', maxWidth: '600px', padding: '1.5rem', marginBottom: '4rem' }}>
+        
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '4px solid #000', paddingBottom: '0.5rem' }}>
+          <h1 style={{ margin: 0, fontSize: '1.5rem' }}>🛠️ PAINEL</h1>
+          <button onClick={onLogout} className="btn-secondary" style={{ background: '#ef4444', color: 'white', padding: '5px 15px', fontSize: '0.8rem' }}>SAIR</button>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '2rem' }}>
-          {/* Coluna 1: Regras */}
-          <section>
-            <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>💰 RECOMPENSAS</h2>
-            <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', fontWeight: 'bold' }}>ACERTO (R$):</label>
-              <input 
-                type="number" step="0.05"
-                className="input-field"
-                style={{ width: '100%', padding: '0.8rem' }}
-                value={config.rewardPerCorrect || 0}
-                onChange={(e) => setConfig({...config, rewardPerCorrect: parseFloat(e.target.value)})}
-              />
+        {/* RECOMPENSAS */}
+        <section style={{ marginBottom: '2rem' }}>
+          <h2 style={{ fontSize: '1.1rem', marginBottom: '1rem', borderLeft: '4px solid #fbbf24', paddingLeft: '0.5rem' }}>💰 RECOMPENSAS</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>ACERTO (R$):</label>
+            <input 
+              type="number" step="0.01" className="input-field" 
+              style={{ width: '100%', padding: '0.8rem' }}
+              value={config.reward_value_correct || 0} 
+              onChange={(e) => setConfig({ ...config, reward_value_correct: parseFloat(e.target.value) })} 
+            />
+          </div>
+        </section>
+
+        {/* ESCOLA */}
+        <section style={{ marginBottom: '2rem' }}>
+          <h2 style={{ fontSize: '1.1rem', marginBottom: '1rem', borderLeft: '4px solid #3b82f6', paddingLeft: '0.5rem' }}>📚 ESCOLA</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
+              <label style={{ fontWeight: 'bold', fontSize: '0.8rem', display: 'block', marginBottom: '0.3rem' }}>ANO:</label>
+              <select 
+                className="input-field" style={{ width: '100%', padding: '0.8rem' }}
+                value={config.school_year || 1} 
+                onChange={(e) => setConfig({ ...config, school_year: parseInt(e.target.value) })}
+              >
+                {[1, 2, 3, 4, 5].map(year => <option key={year} value={year}>{year}º ANO</option>)}
+              </select>
             </div>
             
-            <h2 style={{ fontSize: '1.2rem', marginTop: '1.5rem', marginBottom: '1rem' }}>📚 ESCOLA</h2>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>ANO:</label>
-            <select 
-              className="input-field"
-              style={{ width: '100%', padding: '0.8rem' }}
-              value={config.schoolYear || 1}
-              onChange={(e) => setConfig({...config, schoolYear: parseInt(e.target.value)})}
-            >
-              <option value="1">1º ANO</option>
-              <option value="2">2º ANO</option>
-              <option value="3">3º ANO</option>
-              <option value="4">4º ANO</option>
-            </select>
-
-            <div style={{ marginTop: '1rem' }}>
-              <label style={{ display: 'block', fontWeight: 'bold' }}>MATÉRIAS:</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '0.5rem' }}>
+            <div>
+              <label style={{ fontWeight: 'bold', fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>MATÉRIAS ATIVAS:</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
                 {['Matemática', 'Português', 'Ciências', 'História', 'Geografia'].map(s => (
                   <button 
                     key={s}
                     onClick={() => toggleSubject(s)}
-                    style={{ 
-                      padding: '0.4rem 0.8rem', 
-                      fontSize: '0.7rem',
-                      borderRadius: '8px',
-                      border: '2px solid #000',
-                      background: config.activeSubjects?.includes(s) ? '#00E676' : '#E5E5E5',
-                      color: config.activeSubjects?.includes(s) ? 'white' : '#000'
+                    style={{
+                      padding: '0.5rem 0.8rem', border: '2px solid #000', borderRadius: '15px', fontWeight: 'bold', fontSize: '0.7rem',
+                      background: config.active_subjects?.includes(s) ? '#00E676' : '#fff',
+                      boxShadow: config.active_subjects?.includes(s) ? '0 3px 0 #000' : 'none',
+                      transform: config.active_subjects?.includes(s) ? 'translateY(-2px)' : 'none'
                     }}
                   >
-                    {s}
+                    {s.toUpperCase()}
                   </button>
                 ))}
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Coluna 2: Loja */}
-          <section>
-            <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>🎁 LOJA</h2>
-            <div style={{ maxHeight: '350px', overflowY: 'auto', border: '2px solid #000', padding: '0.5rem', background: '#f8fafc', borderRadius: '8px' }}>
-              {config.storeItems?.map(item => (
-                <div key={item.id} style={{ display: 'flex', gap: '0.3rem', marginBottom: '0.5rem', alignItems: 'center' }}>
-                  <input style={{ width: '30px' }} value={item.icon} onChange={(e) => handleUpdateStoreItem(item.id, 'icon', e.target.value)} />
-                  <input style={{ flex: 1, fontSize: '0.8rem' }} value={item.name} onChange={(e) => handleUpdateStoreItem(item.id, 'name', e.target.value)} />
-                  <input style={{ width: '50px' }} type="number" value={item.price} onChange={(e) => handleUpdateStoreItem(item.id, 'price', parseFloat(e.target.value))} />
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
+        {/* LOJA */}
+        <section style={{ marginBottom: '2rem' }}>
+          <h2 style={{ fontSize: '1.1rem', marginBottom: '1rem', borderLeft: '4px solid #f87171', paddingLeft: '0.5rem' }}>🎁 ITENS DA LOJA</h2>
+          <div style={{ maxHeight: '300px', overflowY: 'auto', border: '2px solid #000', padding: '0.5rem', background: '#f8fafc', borderRadius: '8px' }}>
+            {config.storeItems?.map(item => (
+              <div key={item.id} style={{ display: 'flex', gap: '0.3rem', marginBottom: '0.5rem', alignItems: 'center', background: '#fff', padding: '5px', borderRadius: '5px', border: '1px solid #e2e8f0' }}>
+                <input style={{ width: '35px', textAlign: 'center' }} value={item.icon} onChange={(e) => handleUpdateStoreItem(item.id, 'icon', e.target.value)} />
+                <input style={{ flex: 1, fontSize: '0.8rem' }} value={item.name} onChange={(e) => handleUpdateStoreItem(item.id, 'name', e.target.value)} />
+                <input style={{ width: '55px', fontSize: '0.8rem' }} type="number" value={item.price} onChange={(e) => handleUpdateStoreItem(item.id, 'price', parseFloat(e.target.value))} />
+              </div>
+            ))}
+          </div>
+        </section>
 
-        {/* GESTÃO DE LICENÇAS (APENAS PARA O DONO DO APP) */}
+        {/* GESTÃO DE LICENÇAS */}
         {isAdmin && (
-          <div style={{ marginTop: '2.5rem', borderTop: '4px solid #000', paddingTop: '1.5rem' }}>
+          <section style={{ marginTop: '2.5rem', borderTop: '4px solid #000', paddingTop: '1.5rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.5rem', margin: 0 }}>📦 GESTÃO DE LICENÇAS (VENDAS)</h2>
+              <h2 style={{ fontSize: '1.2rem', margin: 0 }}>📦 LICENÇAS (VENDAS)</h2>
               <button 
                 onClick={generateNewKey}
-                style={{ background: '#00B2FF', color: 'white', padding: '0.8rem 1.2rem', borderRadius: '12px', border: '3px solid #000', fontWeight: 'bold' }}
+                style={{ background: '#00B2FF', color: 'white', padding: '8px 12px', borderRadius: '10px', border: '2px solid #000', fontWeight: 'bold', fontSize: '0.7rem' }}
               >
-                ✨ GERAR NOVA CHAVE
+                + NOVA CHAVE
               </button>
             </div>
 
-            <div style={{ maxHeight: '300px', overflowY: 'auto', background: '#f8fafc', border: '2px solid #000', borderRadius: '12px', padding: '1rem' }}>
-              {loadingKeys ? <p>Carregando chaves...</p> : (
-                keys.length === 0 ? <p style={{ textAlign: 'center', opacity: 0.6 }}>Nenhuma chave gerada ainda.</p> : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+            <div style={{ maxHeight: '250px', overflowY: 'auto', background: '#f1f5f9', border: '2px solid #000', borderRadius: '10px', padding: '0.5rem' }}>
+              {loadingKeys ? <p>Carregando...</p> : (
+                keys.length === 0 ? <p style={{ textAlign: 'center', fontSize: '0.8rem', opacity: 0.6 }}>Nenhuma chave.</p> : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     {keys.map(k => (
-                      <div 
-                        key={k.id} 
-                        style={{ 
-                          display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-                          padding: '0.8rem', background: '#fff', border: '2px solid #cbd5e1', borderRadius: '8px'
-                        }}
-                      >
+                      <div key={k.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.6rem', background: '#fff', border: '1px solid #cbd5e1', borderRadius: '6px' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                          <code style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#1e293b' }}>{k.key}</code>
-                          <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>Criada em: {new Date(k.created_at).toLocaleDateString()}</span>
+                          <code style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{k.key}</code>
+                          <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>{new Date(k.created_at).toLocaleDateString()}</span>
                         </div>
-                        
                         {k.used_at ? (
-                          <div style={{ textAlign: 'right' }}>
-                            <span style={{ background: '#fef2f2', color: '#ef4444', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', border: '1px solid currentColor' }}>USADA 🔐</span>
-                            <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>Por: {k.used_by_email}</div>
-                          </div>
+                          <span style={{ color: '#ef4444', fontSize: '0.6rem', fontWeight: 'bold' }}>USADA</span>
                         ) : (
-                          <button 
-                            onClick={() => copyToClipboard(k.key)}
-                            style={{ background: '#00E676', color: 'white', padding: '0.5rem 1rem', borderRadius: '8px', border: '2px solid #000' }}
-                          >
-                            📋 COPIAR
-                          </button>
+                          <button onClick={() => copyToClipboard(k.key)} style={{ background: '#00E676', color: 'white', padding: '4px 8px', borderRadius: '5px', border: '1px solid #000', fontSize: '0.7rem' }}>COPIAR</button>
                         )}
                       </div>
                     ))}
@@ -189,13 +182,12 @@ const ParentDashboard = ({ onBack, onLogout }) => {
                 )
               )}
             </div>
-            <p style={{ fontSize: '0.8rem', opacity: 0.6, marginTop: '0.5rem' }}>* Cada chave é única e só pode ser usada uma vez para criar uma nova conta.</p>
-          </div>
+          </section>
         )}
 
-        <div style={{ marginTop: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <button onClick={handleSave} className="btn-primary" style={{ width: '100%' }}>💾 SALVAR TUDO</button>
-          <button onClick={onBack} className="btn-secondary" style={{ width: '100%', background: '#94a3b8' }}>🔙 VOLTAR AO JOGO</button>
+        <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+          <button onClick={handleSave} className="btn-primary" style={{ width: '100%', padding: '1rem' }}>💾 SALVAR TUDO</button>
+          <button onClick={onBack} className="btn-secondary" style={{ width: '100%', background: '#94a3b8', padding: '0.8rem' }}>🔙 VOLTAR</button>
         </div>
       </div>
     </div>
