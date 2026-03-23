@@ -86,7 +86,7 @@ const ParentDashboard = ({ onBack, onLogout }) => {
           {/* Coluna 2: Loja */}
           <section>
             <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>🎁 LOJA</h2>
-            <div style={{ maxHeight: '250px', overflowY: 'auto', border: '2px solid #000', padding: '0.5rem', background: '#f8fafc', borderRadius: '8px' }}>
+            <div style={{ maxHeight: '350px', overflowY: 'auto', border: '2px solid #000', padding: '0.5rem', background: '#f8fafc', borderRadius: '8px' }}>
               {config.storeItems?.map(item => (
                 <div key={item.id} style={{ display: 'flex', gap: '0.3rem', marginBottom: '0.5rem', alignItems: 'center' }}>
                   <input style={{ width: '30px' }} value={item.icon} onChange={(e) => handleUpdateStoreItem(item.id, 'icon', e.target.value)} />

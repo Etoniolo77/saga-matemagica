@@ -30,13 +30,12 @@ class SettingsService {
     };
 
     const saved = JSON.parse(localStorage.getItem('saga_gold_config'));
-    
-    // Forçar atualização da loja se houver menos de 5 itens salvos
-    if (saved && saved.storeItems && saved.storeItems.length < 5) {
-      saved.storeItems = defaultConfig.storeItems;
-    }
-
     this.config = saved ? { ...defaultConfig, ...saved } : defaultConfig;
+
+    // Garantir que a loja tenha pelo menos 5 espaços agora
+    if (this.config.storeItems && this.config.storeItems.length < 5) {
+      this.config.storeItems = defaultConfig.storeItems;
+    }
   }
 
   getConfig() {
