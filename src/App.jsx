@@ -27,6 +27,23 @@ function App() {
   const [balance, setBalance] = useState(gameManager.balance);
   const [remainingSkips, setRemainingSkips] = useState(gameManager.checkAndResetSkips());
   const [currentQuest, setCurrentQuest] = useState(null);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pinInput, setPinInput] = useState('');
+
+  const promptParentAccess = () => {
+    setShowPinModal(true);
+    setPinInput('');
+  };
+
+  const verifyPin = () => {
+    if (pinInput === settings.parentPin) {
+      setShowPinModal(false);
+      setScreen('parent');
+    } else {
+      alert('PIN INCORRETO! ⛔ Apenas os pais podem entrar aqui.');
+      setPinInput('');
+    }
+  };
 
   useEffect(() => {
     supabaseService.getSession().then(session => {
@@ -93,8 +110,56 @@ function App() {
           <IntroScreen 
             key="intro" 
             onStart={startAdventure} 
-            onParentAccess={() => setScreen('parent')} 
+            onParentAccess={promptParentAccess} 
           />
+        )}
+
+        {/* CADEADO PARENTAL (PIN) */}
+        {showPinModal && (
+          <div className="modal-overlay" style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+          }}>
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="card" 
+              style={{ width: '300px', padding: '2rem', textAlign: 'center' }}
+            >
+              <h2 style={{ marginBottom: '1rem' }}>🔐 ÁREA DOS PAIS</h2>
+              <p style={{ marginBottom: '1.5rem', fontWeight: 'bold' }}>Digite sua senha (PIN):</p>
+              
+              <input 
+                type="password" 
+                maxLength={4} 
+                autoFocus
+                placeholder="****"
+                style={{
+                  width: '100%', padding: '1rem', fontSize: '2rem', textAlign: 'center',
+                  background: '#f1f5f9', border: '3px solid #cbd5e1', borderRadius: '12px',
+                  marginBottom: '1.5rem'
+                }}
+                value={pinInput}
+                onChange={(e) => setPinInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && verifyPin()}
+              />
+              
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button 
+                  onClick={() => setShowPinModal(false)}
+                  className="btn-secondary" style={{ flex: 1, background: '#94a3b8' }}
+                >
+                  CANCELAR
+                </button>
+                <button 
+                  onClick={verifyPin}
+                  className="btn-primary" style={{ flex: 1 }}
+                >
+                  ENTRAR
+                </button>
+              </div>
+            </motion.div>
+          </div>
         )}
 
         {screen === 'parent' && session && (

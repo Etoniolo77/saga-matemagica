@@ -10,6 +10,7 @@ class SettingsService {
       dailyGoal: 100,
       isTdahMode: true,
       childName: '',
+      parentPin: '1234', // Senha padrão para os pais
       selectedAvatar: '/avatars/avatar_boy_gamer.png',
       storeItems: [
         { id: 1, name: 'Dormir mais tarde', price: 5.00, icon: '🌙' },
