@@ -60,6 +60,17 @@ class SupabaseService {
     const { data: { session } } = await supabase.auth.getSession();
     return session;
   }
+
+  // Verificar se a chave de licença é válida e nunca foi usada
+  async checkLicense(key, email) {
+    const { data, error } = await supabase.rpc('validate_and_use_license_key', {
+      target_key: key,
+      user_email: email
+    });
+    
+    if (error) throw error;
+    return data; // Retorna true se a chave foi validada e usada, false se for inválida
+  }
 }
 
 export const supabaseService = new SupabaseService();

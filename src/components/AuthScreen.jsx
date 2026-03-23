@@ -9,10 +9,28 @@ const AuthScreen = ({ onAuthSuccess, onBack }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [inviteCode, setInviteCode] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    // RESTRIÇÃO DE ACESSO: Validação Profissional de Chave de Licença
+    if (!isLogin) {
+       try {
+         const isValid = await supabaseService.checkLicense(inviteCode, email);
+         if (!isValid) {
+           setError('CHAVE DE LICENÇA INVÁLIDA OU JÁ USADA! ⛔ Adquira uma licença válida.');
+           setLoading(false);
+           return;
+         }
+       } catch (err) {
+         setError('Erro ao validar licença. Tente novamente.');
+         setLoading(false);
+         return;
+       }
+    }
 
     try {
       const data = isLogin 
@@ -22,8 +40,7 @@ const AuthScreen = ({ onAuthSuccess, onBack }) => {
       if (data && data.session) {
         onAuthSuccess(data.session);
       } else {
-        // Caso o Supabase exija confirmação de e-mail
-        alert('Conta criada com sucesso! 🛡️\n\nPor favor, verifique seu e-mail para confirmar a conta antes de fazer o primeiro login.');
+        alert('Conta criada com sucesso! 🛡️\n\nPor favor, faça seu login agora.');
         setIsLogin(true);
       }
     } catch (err) {
@@ -58,6 +75,14 @@ const AuthScreen = ({ onAuthSuccess, onBack }) => {
             className="input-field" style={{ width: '100%', padding: '1rem' }}
             value={password} onChange={(e) => setPassword(e.target.value)}
           />
+
+          {!isLogin && (
+            <input 
+              type="text" placeholder="Código de Acesso (Solicite ao Pai)" required
+              className="input-field" style={{ width: '100%', padding: '1.2rem', background: '#fffbeb', border: '3px solid #fbbf24' }}
+              value={inviteCode} onChange={(e) => setInviteCode(e.target.value)}
+            />
+          )}
           
           <button type="submit" disabled={loading} className="btn-primary" style={{ marginTop: '1rem' }}>
             {loading ? 'CARREGANDO...' : (isLogin ? 'ENTRAR' : 'CADASTRAR')}
