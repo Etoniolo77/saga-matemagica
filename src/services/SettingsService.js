@@ -2,7 +2,7 @@
 
 class SettingsService {
   constructor() {
-    this.config = JSON.parse(localStorage.getItem('saga_gold_config')) || {
+    const defaultConfig = {
       schoolYear: 1,
       activeSubjects: ['Matemática', 'Português', 'Ciências', 'História', 'Geografia'],
       rewardPerCorrect: 0.25,
@@ -10,7 +10,7 @@ class SettingsService {
       dailyGoal: 100,
       isTdahMode: true,
       childName: '',
-      parentPin: '1234', // Senha padrão para os pais
+      parentPin: '1234',
       selectedAvatar: '/avatars/avatar_boy_gamer.png',
       storeItems: [
         { id: 1, name: 'Dormir mais tarde', price: 5.00, icon: '🌙' },
@@ -26,6 +26,9 @@ class SettingsService {
         lastSkipReset: new Date().toISOString()
       }
     };
+
+    const saved = JSON.parse(localStorage.getItem('saga_gold_config'));
+    this.config = saved ? { ...defaultConfig, ...saved } : defaultConfig;
   }
 
   getConfig() {
