@@ -15,7 +15,9 @@ const ParentDashboard = ({ onBack, onLogout }) => {
 
   const checkAdmin = async () => {
     const session = await supabaseService.getSession();
-    if (session?.user?.email === 'evandro.toniolo@gmail.com') {
+    const userEmail = session?.user?.email?.toLowerCase();
+    console.log("Verificando Admin para:", userEmail);
+    if (userEmail === 'evandro.toniolo@gmail.com') {
       setIsAdmin(true);
     }
   };
