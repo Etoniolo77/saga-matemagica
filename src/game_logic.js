@@ -11,7 +11,7 @@ class GameManager {
     
     // FINANCIAL SYSTEM
     const savedBalance = localStorage.getItem('saga_balance');
-    this.balance = savedBalance !== null ? parseFloat(savedBalance) : 10;
+    this.balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
     this.history = JSON.parse(localStorage.getItem('saga_history')) || [];
     
     const today = new Date();
