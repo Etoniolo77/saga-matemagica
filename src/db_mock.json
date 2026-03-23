@@ -1,0 +1,75 @@
+{
+  "worlds": [
+    { "id": 1, "name": "Floresta dos Números", "description": "Números de 0 a 30", "is_locked": false },
+    {
+      "id": 2,
+      "name": "2. Torre do Mago",
+      "description": "Desafios Intermediários (1 a 100)",
+      "is_locked": false
+    },
+    { "id": 3, "name": "Reino das Sombras", "description": "Números >100 e Operações Avançadas", "is_locked": true }
+  ],
+  "topics": [
+    { "id": "t1", "name": "Sequência Numérica" },
+    { "id": "t2", "name": "Antecessor e Sucessor" },
+    { "id": "t3", "name": "Maior, Menor, Igual" },
+    { "id": "t4", "name": "Decomposição (Dezenas e Unidades)" },
+    { "id": "t5", "name": "Adição" },
+    { "id": "t6", "name": "Subtração" },
+    { "id": "t7", "name": "Resolução de Problemas" }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "world_id": 1,
+      "topic_id": "t1",
+      "set_id": "A",
+      "statement_text": "Complete a sequência numérica: 5, 6, 7, _, 9",
+      "statement_audio_url": "/audio/q1_seq.mp3",
+      "input_type": "numpad",
+      "correct_answer": "8",
+      "visual_hint_url": "/hints/forest_hint_seq.png",
+      "options": []
+    },
+    {
+      "id": "q1_2",
+      "world_id": 1,
+      "topic_id": "t1",
+      "set_id": "A",
+      "statement_text": "Qual o próximo número? 10, 11, _, 13",
+      "statement_audio_url": "/audio/q1_seq_2.mp3",
+      "input_type": "numpad",
+      "correct_answer": "12",
+      "visual_hint_url": "/hints/forest_hint_seq_2.png",
+      "options": []
+    },
+    {
+      "id": "q2",
+      "world_id": 1,
+      "topic_id": "t3",
+      "set_id": "A",
+      "statement_text": "O número 12 é maior ou menor que o 8?",
+      "statement_audio_url": "/audio/q2_maior.mp3",
+      "input_type": "drag_drop_jacare",
+      "correct_answer": ">",
+      "visual_hint_url": "/hints/jacare_12_8.png",
+      "left_number": 12,
+      "right_number": 8,
+      "options": [">", "<", "="]
+    },
+    {
+      "id": "q2_2",
+      "world_id": 1,
+      "topic_id": "t3",
+      "set_id": "A",
+      "statement_text": "O número 5 é maior ou menor que o 9?",
+      "statement_audio_url": "/audio/q2_maior_2.mp3",
+      "input_type": "drag_drop_jacare",
+      "correct_answer": "<",
+      "visual_hint_url": "/hints/jacare_5_9.png",
+      "left_number": 5,
+      "right_number": 9,
+      "options": [">", "<", "="]
+    }
+  ]
+}

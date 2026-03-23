@@ -1,0 +1,183 @@
+/* Lumina Quest TDAH Design System */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@700;900&display=swap');
+
+:root {
+  /* Brookhaven Theme (Roblox) */
+  --bg-primary: #55b2ff; /* Sky Blue Brookhaven */
+  --surface: rgba(255, 255, 255, 0.95);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  
+  --primary-color: #0084ff; /* Strong Roblox Blue */
+  --primary-hover: #006bce;
+  --secondary-color: #facc15; /* Robux Yellow */
+  --accent-color: #4ade80; /* Roblox Green */
+  
+  --font-body: 'Nunito', sans-serif;
+  --font-heading: 'Fredoka', sans-serif;
+
+  --shadow-sm: 0 4px 0px rgba(0,0,0,0.15); /* Chunky Game Borders */
+  --shadow-md: 0 8px 0px rgba(0,0,0,0.15);
+  --radius-sm: 0.5rem;
+  --radius-md: 1.5rem;
+  --radius-lg: 2.5rem;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.2) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255,255,255,0.2) 2px, transparent 2px);
+  background-size: 50px 50px; /* Roblox Baseplate effect */
+  background-attachment: fixed;
+  color: var(--text-primary);
+  /* Touch target safety for ADHD */
+  touch-action: manipulation;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+:root {
+  --primary: #00B2FF;
+  --secondary: #00E676;
+  --bg-game: #E5E5E5;
+  --blox-text: #000000;
+  --blox-border: 4px solid #000;
+  --blox-shadow: 6px 6px 0px #000;
+}
+
+body {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-game);
+  color: var(--blox-text);
+  overflow: hidden;
+}
+
+.screen {
+  background: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Padrão sutil de blocos */
+  min-height: 100vh;
+}
+
+.card, .glass {
+  background: white !important;
+  border: var(--blox-border) !important;
+  box-shadow: var(--blox-shadow) !important;
+  border-radius: 4px !important;
+  backdrop-filter: none !important;
+}
+
+button {
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  text-transform: uppercase;
+  font-weight: 900;
+  border: var(--blox-border);
+  box-shadow: 4px 4px 0px #000;
+  border-radius: 4px;
+}
+
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000;
+}
+
+.btn-primary {
+  background: var(--secondary);
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+}
+
+.btn-secondary {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+}
+
+.input-field {
+  border: var(--blox-border);
+  font-family: inherit;
+  font-weight: bold;
+}
+
+/* Roblox Specific HUD */
+.hud-item {
+  background: white;
+  border: var(--blox-border);
+  box-shadow: 4px 4px 0px #000;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+}
+
+.btn-primary:active {
+  transform: translateY(4px);
+  border-bottom-width: 2px;
+  margin-top: 4px; /* Simula apertar o botão Roblox */
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 4px solid var(--primary-color);
+  padding: 1rem;
+  border: none; 
+  box-shadow: 0 16px 32px rgba(34, 49, 49, 0.06);
+}
+
+.blur-bg {
+  position: absolute;
+  top:0; left:0; width: 100%; height: 100%;
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.hud {
+  width: 100%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Protege contra quebra seca no Galaxy S25 */
+  gap: 1rem;
+  z-index: 10;
+}
+
+.overlay {
+  position: fixed; /* Alterado de absolute para fixed para abranger tela inteira */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(232, 250, 249, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.hero-text {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  margin: 0;
+  line-height: 1.1;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+  border-color: var(--error-soft) !important;
+}

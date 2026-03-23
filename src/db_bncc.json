@@ -1,0 +1,67 @@
+{
+  "bncc_content": {
+    "1": {
+      "Matemática": [
+        { "id": "m1_1", "topic": "adicao", "statement": "O explorador ganhou 5 gemas no nível 1 e 3 no nível 2. Total?", "options": ["6", "7", "8", "9"], "correct": "8" },
+        { "id": "m1_2", "topic": "adicao", "statement": "Sua skin custa 10 Robux e o chapéu 2 Robux. Qual o valor total?", "options": ["11", "12", "13", "14"], "correct": "12" },
+        { "id": "m1_3", "topic": "contagem", "statement": "Quantas rodas têm 2 carros de blocos juntos?", "options": ["4", "6", "8", "10"], "correct": "8" }
+      ],
+      "Português": [
+        { "id": "p1_1", "topic": "alfabetizacao", "statement": "Qual a primeira letra da palavra 'BLOCO'?", "options": ["P", "B", "M", "L"], "correct": "B" },
+        { "id": "p1_2", "topic": "alfabetizacao", "statement": "Complete a palavra do jogo: P_TECA", "options": ["E", "I", "O", "A"], "correct": "E" },
+        { "id": "p1_3", "topic": "vogais", "statement": "Qual destas palavras começa com uma VOGAL?", "options": ["AVATAR", "ROBOX", "MAPA", "SKIN"], "correct": "AVATAR" }
+      ],
+      "Ciências": [
+        { "id": "c1_1", "topic": "corpo_humano", "statement": "Qual parte do corpo o Avatar usa para enxergar o portal?", "options": ["Ouvidos", "Mãos", "Olhos", "Pés"], "correct": "Olhos" },
+        { "id": "c1_2", "topic": "periodos", "statement": "Em qual período o sol aparece no mapa do jogo?", "options": ["Noite", "Dia", "Madrugada", "Inverno"], "correct": "Dia" }
+      ]
+    },
+    "2": {
+      "Matemática": [
+        { "id": "m2_1", "topic": "subtracao", "statement": "Você tinha 20 blocos e usou 5 na construção. Quantos sobraram?", "options": ["10", "15", "12", "18"], "correct": "15" },
+        { "id": "m2_2", "topic": "multiplicacao", "statement": "Se 1 portal custa 2 gemas, quanto custam 5 portais?", "options": ["7", "8", "10", "12"], "correct": "10" }
+      ],
+      "Português": [
+        { "id": "p2_1", "topic": "silabas", "statement": "Quantas sílabas tem a palavra 'CA-CHOR-RO'?", "options": ["2", "3", "4", "5"], "correct": "3" },
+        { "id": "p2_2", "topic": "antonimos", "statement": "Qual o contrário de ALTO no mundo dos blocos?", "options": ["Grande", "Baixo", "Largo", "Forte"], "correct": "Baixo" }
+      ],
+      "Ciências": [
+        { "id": "c2_1", "topic": "animais", "statement": "Qual destes animais de estimação nasce de um ovo?", "options": ["Gato", "Galinha", "Porco", "Cachorro"], "correct": "Galinha" },
+        { "id": "c2_2", "topic": "plantas", "statement": "O que a planta precisa para crescer no seu jardim virtual?", "options": ["Chocolate", "Pedras", "Água e Luz", "Vento"], "correct": "Água e Luz" }
+      ]
+    },
+    "3": {
+      "Matemática": [
+        { "id": "m3_1", "topic": "divisao", "statement": "Se tenho 12 balas e divido para 3 amigos, quantas cada um ganha?", "options": ["3", "4", "5", "6"], "correct": "4" },
+        { "id": "m3_2", "topic": "centenas", "statement": "Quantas dezenas existem em uma CENTENA (100)?", "options": ["5", "10", "15", "20"], "correct": "10" }
+      ],
+      "Português": [
+        { "id": "p3_1", "topic": "acentuacao", "statement": "Qual palavra está escrita corretamente?", "options": ["Jacaré", "Jacare", "Jacárê", "Jacáre"], "correct": "Jacaré" },
+        { "id": "p3_2", "topic": "adjetivos", "statement": "Na frase 'O Avatar é veloz', qual a característica (adjetivo)?", "options": ["Avatar", "É", "Veloz", "O"], "correct": "Veloz" }
+      ],
+      "História": [
+        { "id": "h3_1", "topic": "cidade", "statement": "Onde fica a sede do governo da cidade de blocos?", "options": ["Escola", "Prefeitura", "Igreja", "Shopping"], "correct": "Prefeitura" },
+        { "id": "h3_2", "topic": "tempo", "statement": "Qual destes objetos conta o tempo no jogo?", "options": ["Mapa", "Bússola", "Relógio", "Espada"], "correct": "Relógio" }
+      ],
+      "Ciências": [
+        { "id": "c3_1", "topic": "solo", "statement": "Do que é feita a areia da praia do mapa?", "options": ["Plástico", "Pequenos pedaços de rochas", "Açúcar", "Nuvens"], "correct": "Pequenos pedaços de rochas" }
+      ]
+    },
+    "4": {
+      "Matemática": [
+        { "id": "m4_1", "topic": "fracoes", "statement": "O que representa metade de um círculo de blocos?", "options": ["1/3", "1/4", "1/2", "1/5"], "correct": "1/2" },
+        { "id": "m4_2", "topic": "geometria", "statement": "Quantos lados tem um quadrado perfeito?", "options": ["3", "4", "5", "6"], "correct": "4" }
+      ],
+      "Português": [
+        { "id": "p4_1", "topic": "verbos", "statement": "Qual destas palavras indica uma AÇÃO (verbo)?", "options": ["Avatar", "Correr", "Azul", "Rápido"], "correct": "Correr" }
+      ],
+      "Geografia": [
+        { "id": "g4_1", "topic": "brasil", "statement": "Qual é a capital do Brasil no mapa real?", "options": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"], "correct": "Brasília" },
+        { "id": "g4_2", "topic": "clima", "statement": "Qual região do Brasil é famosa por ser muito quente?", "options": ["Sul", "Nordeste", "Antártida", "Lua"], "correct": "Nordeste" }
+      ],
+      "Ciências": [
+        { "id": "c4_1", "topic": "astronomia", "statement": "Qual estrela ilumina o nosso sistema solar?", "options": ["Lua", "Marte", "Sol", "Júpiter"], "correct": "Sol" }
+      ]
+    }
+  }
+}
