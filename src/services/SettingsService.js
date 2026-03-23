@@ -15,7 +15,9 @@ class SettingsService {
       storeItems: [
         { id: 1, name: 'Dormir mais tarde', price: 5.00, icon: '🌙' },
         { id: 2, name: '1 Hora de Internet', price: 10.00, icon: '🌐' },
-        { id: 3, name: '1 Jogo de PS5', price: 100.00, icon: '🎮' }
+        { id: 3, name: '1 Jogo de PS5', price: 100.00, icon: '🎮' },
+        { id: 4, name: 'Cinema em Família', price: 50.00, icon: '🍿' },
+        { id: 5, name: 'Sorvete ou Doce', price: 15.00, icon: '🍦' }
       ],
       journey: {
         score: 0,
@@ -28,6 +30,12 @@ class SettingsService {
     };
 
     const saved = JSON.parse(localStorage.getItem('saga_gold_config'));
+    
+    // Forçar atualização da loja se houver menos de 5 itens salvos
+    if (saved && saved.storeItems && saved.storeItems.length < 5) {
+      saved.storeItems = defaultConfig.storeItems;
+    }
+
     this.config = saved ? { ...defaultConfig, ...saved } : defaultConfig;
   }
 
