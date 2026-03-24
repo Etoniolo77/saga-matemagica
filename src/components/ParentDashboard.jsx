@@ -88,7 +88,15 @@ const ParentDashboard = ({ onBack, onLogout }) => {
       <div className="card" style={{ width: '100%', maxWidth: '600px', padding: '1.5rem', marginBottom: '4rem' }}>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '4px solid #000', paddingBottom: '0.5rem' }}>
-          <h1 style={{ margin: 0, fontSize: '1.5rem' }}>🛠️ PAINEL</h1>
+          <div>
+            <h1 style={{ margin: 0, fontSize: '1.5rem' }}>🛠️ PAINEL</h1>
+            <button 
+              onClick={() => window.location.reload()}
+              style={{ background: '#f8fafc', border: '1px solid #000', fontSize: '0.6rem', padding: '2px 8px', borderRadius: '4px', marginTop: '5px' }}
+            >
+              🔄 ATUALIZAR APP
+            </button>
+          </div>
           <button onClick={onLogout} className="btn-secondary" style={{ background: '#ef4444', color: 'white', padding: '5px 15px', fontSize: '0.8rem' }}>SAIR</button>
         </div>
 
