@@ -2,65 +2,88 @@
   "bncc_content": {
     "1": {
       "Matemática": [
-        { "id": "m1_1", "topic": "adicao", "statement": "O explorador ganhou 5 gemas no nível 1 e 3 no nível 2. Total?", "options": ["6", "7", "8", "9"], "correct": "8" },
-        { "id": "m1_2", "topic": "adicao", "statement": "Sua skin custa 10 Robux e o chapéu 2 Robux. Qual o valor total?", "options": ["11", "12", "13", "14"], "correct": "12" },
-        { "id": "m1_3", "topic": "contagem", "statement": "Quantas rodas têm 2 carros de blocos juntos?", "options": ["4", "6", "8", "10"], "correct": "8" }
+        { "id": "m1_1", "topic": "adicao", "statement": "Se você tem 4 maçãs e ganha mais 3, com quantas fica?", "options": ["6", "7", "8", "9"], "correct": "7" },
+        { "id": "m1_2", "topic": "contagem", "statement": "Quantos dedos temos nas duas mãos juntas?", "options": ["5", "8", "10", "12"], "correct": "10" },
+        { "id": "m1_3", "topic": "formas", "statement": "Qual forma geométrica se parece com uma bola de futebol?", "options": ["Quadrado", "Círculo", "Triângulo", "Cubo"], "correct": "Círculo" },
+        { "id": "m1_4", "topic": "subtracao", "statement": "Você tinha 5 lápis e perdeu 2. Quantos sobraram?", "options": ["3", "4", "2", "5"], "correct": "3" },
+        { "id": "m1_5", "topic": "comparacao", "statement": "Qual número é MAIOR: 8 ou 3?", "options": ["3", "8", "Igual", "Nenhum"], "correct": "8" }
       ],
       "Português": [
-        { "id": "p1_1", "topic": "alfabetizacao", "statement": "Qual a primeira letra da palavra 'BLOCO'?", "options": ["P", "B", "M", "L"], "correct": "B" },
-        { "id": "p1_2", "topic": "alfabetizacao", "statement": "Complete a palavra do jogo: P_TECA", "options": ["E", "I", "O", "A"], "correct": "E" },
-        { "id": "p1_3", "topic": "vogais", "statement": "Qual destas palavras começa com uma VOGAL?", "options": ["AVATAR", "ROBOX", "MAPA", "SKIN"], "correct": "AVATAR" }
+        { "id": "p1_1", "topic": "letras", "statement": "Qual a primeira letra da palavra ABACAXI?", "options": ["A", "B", "C", "D"], "correct": "A" },
+        { "id": "p1_2", "topic": "vogais", "statement": "Quais são as VOGAIS?", "options": ["A-E-I-O-U", "B-C-D-F-G", "J-K-L-M-N", "P-Q-R-S-T"], "correct": "A-E-I-O-U" },
+        { "id": "p1_3", "topic": "leitura", "statement": "Como se escreve o nome deste animal: 🐱?", "options": ["Gato", "Pato", "Cão", "Leão"], "correct": "Gato" },
+        { "id": "p1_4", "topic": "rimas", "statement": "Qual palavra rima com MÃO?", "options": ["Pé", "Coração", "Dedo", "Olho"], "correct": "Coração" },
+        { "id": "p1_5", "topic": "letras", "statement": "Quantas letras tem a palavra 'EDUCAÇÃO'?", "options": ["6", "7", "8", "9"], "correct": "8" },
+        { "id": "p1_6", "topic": "alfabeto", "statement": "Qual letra vem depois da letra 'B'?", "options": ["A", "D", "C", "E"], "correct": "C" },
+        { "id": "p1_7", "topic": "vogais", "statement": "Qual destas palavras começa com uma VOGAL?", "options": ["ESCOLA", "MAPA", "LÁPIS", "CASA"], "correct": "ESCOLA" },
+        { "id": "p1_8", "topic": "separacao", "statement": "Quantos sons (sílabas) ouvimos em BA-LA?", "options": ["1", "2", "3", "4"], "correct": "2" }
       ],
       "Ciências": [
-        { "id": "c1_1", "topic": "corpo_humano", "statement": "Qual parte do corpo o Avatar usa para enxergar o portal?", "options": ["Ouvidos", "Mãos", "Olhos", "Pés"], "correct": "Olhos" },
-        { "id": "c1_2", "topic": "periodos", "statement": "Em qual período o sol aparece no mapa do jogo?", "options": ["Noite", "Dia", "Madrugada", "Inverno"], "correct": "Dia" }
+        { "id": "c1_1", "topic": "sentidos", "statement": "Qual sentido usamos para ouvir música?", "options": ["Visão", "Audição", "Tato", "Olfato"], "correct": "Audição" },
+        { "id": "c1_2", "topic": "corpo", "statement": "Onde fica o nosso cérebro?", "options": ["Pés", "Mãos", "Cabeça", "Barriga"], "correct": "Cabeça" },
+        { "id": "c1_3", "topic": "natureza", "statement": "Qual destes animais voa?", "options": ["Cachorro", "Peixe", "Pássaro", "Cobra"], "correct": "Pássaro" },
+        { "id": "c1_4", "topic": "sentidos", "statement": "Qual sentido usamos para sentir o SABOR dos alimentos?", "options": ["Tato", "Olfato", "Paladar", "Visão"], "correct": "Paladar" },
+        { "id": "c1_5", "topic": "higiene", "statement": "O que devemos fazer antes de comer?", "options": ["Brincar", "Lavar as mãos", "Dormir", "Correr"], "correct": "Lavar as mãos" }
       ]
     },
     "2": {
       "Matemática": [
-        { "id": "m2_1", "topic": "subtracao", "statement": "Você tinha 20 blocos e usou 5 na construção. Quantos sobraram?", "options": ["10", "15", "12", "18"], "correct": "15" },
-        { "id": "m2_2", "topic": "multiplicacao", "statement": "Se 1 portal custa 2 gemas, quanto custam 5 portais?", "options": ["7", "8", "10", "12"], "correct": "10" }
+        { "id": "m2_1", "topic": "dezenas", "statement": "Quanto valem 2 DEZENAS?", "options": ["10", "20", "30", "40"], "correct": "20" },
+        { "id": "m2_2", "topic": "adicao", "statement": "Resolva: 15 + 15 = ?", "options": ["20", "25", "30", "35"], "correct": "30" },
+        { "id": "m2_3", "topic": "tempo", "statement": "Quantos dias tem uma semana?", "options": ["5", "6", "7", "8"], "correct": "7" },
+        { "id": "m2_4", "topic": "subtracao", "statement": "Quanto é 50 menos 10?", "options": ["30", "40", "50", "60"], "correct": "40" }
       ],
       "Português": [
-        { "id": "p2_1", "topic": "silabas", "statement": "Quantas sílabas tem a palavra 'CA-CHOR-RO'?", "options": ["2", "3", "4", "5"], "correct": "3" },
-        { "id": "p2_2", "topic": "antonimos", "statement": "Qual o contrário de ALTO no mundo dos blocos?", "options": ["Grande", "Baixo", "Largo", "Forte"], "correct": "Baixo" }
+        { "id": "p2_1", "topic": "silabas", "statement": "Separe as sílabas de BONECA:", "options": ["BO-NE-CA", "BON-E-CA", "BONE-CA", "B-O-N-E-C-A"], "correct": "BO-NE-CA" },
+        { "id": "p2_2", "topic": "antonimos", "statement": "Qual o contrário de DIA?", "options": ["Tarde", "Noite", "Manhã", "Sol"], "correct": "Noite" },
+        { "id": "p2_3", "topic": "masculino", "statement": "Qual o feminino de LEÃO?", "options": ["Leoa", "Gata", "Onça", "Tigre"], "correct": "Leoa" },
+        { "id": "p2_4", "topic": "substantivos", "statement": "Qual palavra indica um LUGAR?", "options": ["Brasil", "Correr", "Azul", "Rápido"], "correct": "Brasil" },
+        { "id": "p2_5", "topic": "leitura", "statement": "O que o macaco gosta de comer?", "options": ["Carne", "Banana", "Queijo", "Pedra"], "correct": "Banana" }
       ],
       "Ciências": [
-        { "id": "c2_1", "topic": "animais", "statement": "Qual destes animais de estimação nasce de um ovo?", "options": ["Gato", "Galinha", "Porco", "Cachorro"], "correct": "Galinha" },
-        { "id": "c2_2", "topic": "plantas", "statement": "O que a planta precisa para crescer no seu jardim virtual?", "options": ["Chocolate", "Pedras", "Água e Luz", "Vento"], "correct": "Água e Luz" }
+        { "id": "c2_1", "topic": "animais", "statement": "Qual destes animais nasce de um OVO?", "options": ["Gato", "Galinha", "Porco", "Cachorro"], "correct": "Galinha" },
+        { "id": "c2_2", "topic": "plantas", "statement": "Qual parte da planta fica debaixo da terra?", "options": ["Folha", "Flor", "Raiz", "Fruto"], "correct": "Raiz" },
+        { "id": "c2_3", "topic": "animais", "statement": "Onde vivem os peixes?", "options": ["Árvore", "Nuvem", "Água", "Buraco"], "correct": "Água" }
       ]
     },
     "3": {
       "Matemática": [
-        { "id": "m3_1", "topic": "divisao", "statement": "Se tenho 12 balas e divido para 3 amigos, quantas cada um ganha?", "options": ["3", "4", "5", "6"], "correct": "4" },
-        { "id": "m3_2", "topic": "centenas", "statement": "Quantas dezenas existem em uma CENTENA (100)?", "options": ["5", "10", "15", "20"], "correct": "10" }
+        { "id": "m3_1", "topic": "multiplicacao", "statement": "Quanto é 3 vezes 4?", "options": ["7", "10", "12", "15"], "correct": "12" },
+        { "id": "m3_2", "topic": "unidades", "statement": "Uma CENTENA é igual a:", "options": ["10", "50", "100", "1000"], "correct": "100" },
+        { "id": "m3_3", "topic": "divisao", "statement": "Tenho 10 balas para 2 crianças. Quantas para cada?", "options": ["2", "4", "5", "8"], "correct": "5" }
       ],
       "Português": [
-        { "id": "p3_1", "topic": "acentuacao", "statement": "Qual palavra está escrita corretamente?", "options": ["Jacaré", "Jacare", "Jacárê", "Jacáre"], "correct": "Jacaré" },
-        { "id": "p3_2", "topic": "adjetivos", "statement": "Na frase 'O Avatar é veloz', qual a característica (adjetivo)?", "options": ["Avatar", "É", "Veloz", "O"], "correct": "Veloz" }
+        { "id": "p3_1", "topic": "substantivos", "statement": "Qual destas palavras é um nome PRÓPRIO (pessoa ou lugar)?", "options": ["Casa", "Brasil", "Carro", "Amigo"], "correct": "Brasil" },
+        { "id": "p3_2", "topic": "pontuacao", "statement": "Qual sinal usamos para fazer uma PERGUNTA?", "options": ["Ponto Final (.)", "Vírgula (,)", "Interrogação (?)", "Exclamação (!)"], "correct": "Interrogação (?)" },
+        { "id": "p3_3", "topic": "gramatica", "statement": "Qual palavra é um ADJETIVO (característica)?", "options": ["Bola", "Bonita", "Boneca", "Bolo"], "correct": "Bonita" }
       ],
       "História": [
-        { "id": "h3_1", "topic": "cidade", "statement": "Onde fica a sede do governo da cidade de blocos?", "options": ["Escola", "Prefeitura", "Igreja", "Shopping"], "correct": "Prefeitura" },
-        { "id": "h3_2", "topic": "tempo", "statement": "Qual destes objetos conta o tempo no jogo?", "options": ["Mapa", "Bússola", "Relógio", "Espada"], "correct": "Relógio" }
-      ],
-      "Ciências": [
-        { "id": "c3_1", "topic": "solo", "statement": "Do que é feita a areia da praia do mapa?", "options": ["Plástico", "Pequenos pedaços de rochas", "Açúcar", "Nuvens"], "correct": "Pequenos pedaços de rochas" }
+        { "id": "h3_1", "topic": "comunidade", "statement": "Quem governa uma CIDADE?", "options": ["Presidente", "Governador", "Prefeito", "Policial"], "correct": "Prefeito" },
+        { "id": "h3_2", "topic": "profissoes", "statement": "Quem cuida das flores e plantas?", "options": ["Médico", "Bombeiro", "Jardineiro", "Professor"], "correct": "Jardineiro" }
       ]
     },
     "4": {
       "Matemática": [
-        { "id": "m4_1", "topic": "fracoes", "statement": "O que representa metade de um círculo de blocos?", "options": ["1/3", "1/4", "1/2", "1/5"], "correct": "1/2" },
-        { "id": "m4_2", "topic": "geometria", "statement": "Quantos lados tem um quadrado perfeito?", "options": ["3", "4", "5", "6"], "correct": "4" }
-      ],
-      "Português": [
-        { "id": "p4_1", "topic": "verbos", "statement": "Qual destas palavras indica uma AÇÃO (verbo)?", "options": ["Avatar", "Correr", "Azul", "Rápido"], "correct": "Correr" }
+        { "id": "m4_1", "topic": "milhar", "statement": "Quanto é 500 + 500?", "options": ["800", "900", "1000", "1200"], "correct": "1000" },
+        { "id": "m4_2", "topic": "geometria", "statement": "Quantos lados tem um QUADRADO?", "options": ["3", "4", "5", "6"], "correct": "4" }
       ],
       "Geografia": [
-        { "id": "g4_1", "topic": "brasil", "statement": "Qual é a capital do Brasil no mapa real?", "options": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"], "correct": "Brasília" },
-        { "id": "g4_2", "topic": "clima", "statement": "Qual região do Brasil é famosa por ser muito quente?", "options": ["Sul", "Nordeste", "Antártida", "Lua"], "correct": "Nordeste" }
+        { "id": "g4_1", "topic": "mapas", "statement": "Qual é a capital do Brasil?", "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Curitiba"], "correct": "Brasília" },
+        { "id": "g4_2", "topic": "estados", "statement": "Em qual país nós vivemos?", "options": ["Portugal", "Brasil", "Argentina", "Espanha"], "correct": "Brasil" },
+        { "id": "g4_3", "topic": "natureza", "statement": "Qual destas é a maior floresta do mundo?", "options": ["Caatinga", "Amazônia", "Cerrado", "Pampas"], "correct": "Amazônia" }
+      ]
+    },
+    "5": {
+      "Matemática": [
+        { "id": "m5_1", "topic": "fracoes", "statement": "O que representa 1/2 de uma pizza?", "options": ["A pizza inteira", "Metade da pizza", "Um pedaço pequeno", "Nada"], "correct": "Metade da pizza" },
+        { "id": "m5_2", "topic": "multiplicacao", "statement": "Quanto é 25 x 4?", "options": ["80", "90", "100", "110"], "correct": "100" }
+      ],
+      "Português": [
+        { "id": "p5_1", "topic": "verbos", "statement": "Qual palavra indica uma AÇÃO (verbo)?", "options": ["Lápis", "Correr", "Bonito", "Ontem"], "correct": "Correr" }
       ],
       "Ciências": [
-        { "id": "c4_1", "topic": "astronomia", "statement": "Qual estrela ilumina o nosso sistema solar?", "options": ["Lua", "Marte", "Sol", "Júpiter"], "correct": "Sol" }
+        { "id": "c5_1", "topic": "universo", "statement": "Qual é o nome do planeta em que vivemos?", "options": ["Marte", "Terra", "Vênus", "Júpiter"], "correct": "Terra" },
+        { "id": "c5_2", "topic": "astros", "statement": "O Sol é uma:", "options": ["Planeta", "Estrela", "Lua", "Cometa"], "correct": "Estrela" }
       ]
     }
   }
