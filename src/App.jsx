@@ -49,16 +49,22 @@ function App() {
     const syncConfig = () => setSettings(settingsService.getConfig());
     window.addEventListener('configUpdated', syncConfig);
     
-    supabaseService.getSession().then(session => {
-      setSession(session);
-      if (!session) {
-        setScreen('auth');
-      } else if (!settings.childName) {
-        setScreen('profile');
+    const initApp = async () => {
+      try {
+        const sess = await supabaseService.getSession();
+        setSession(sess);
+        // Se houver sessão, checa perfil, senão continua em 'intro' (Modo Convidado/Local)
+        if (sess && !settings.childName) {
+           setScreen('profile');
+        }
+      } catch (err) {
+        console.warn("Supabase não detectado. Iniciando em Modo Local.");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    };
 
+    initApp();
     return () => window.removeEventListener('configUpdated', syncConfig);
   }, [settings.childName]);
 
@@ -68,7 +74,12 @@ function App() {
       setScreen('onboarding');
       return;
     }
-    const q = gameManager.getNextQuestion();
+    // Agora vai para o MAPA antes de começar a aula
+    setScreen('map');
+  };
+
+  const handleSelectWorld = (worldId) => {
+    const q = gameManager.getNextQuestion(worldId);
     setCurrentQuest(q);
     setScreen('quest');
   };
@@ -117,11 +128,19 @@ function App() {
           />
         )}
         
-        {screen === 'intro' && session && (
+        {screen === 'intro' && (
           <IntroScreen 
             key="intro" 
             onStart={startAdventure} 
             onParentAccess={promptParentAccess} 
+          />
+        )}
+
+        {screen === 'map' && (
+          <MapScreen 
+            key="map" 
+            onSelectWorld={handleSelectWorld} 
+            onBack={() => setScreen('intro')} 
           />
         )}
 
