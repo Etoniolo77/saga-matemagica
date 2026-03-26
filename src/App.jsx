@@ -95,7 +95,13 @@ function App() {
     }
   };
 
-  if (loading) return <div className="screen" style={{display:'flex', alignItems:'center', justifyContent:'center'}}><h1>CARREGANDO...</h1></div>;
+  if (loading) return (
+    <div className="app-container" style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', color: 'var(--primary)' }}>CARREGANDO O REINO...</h1>
+      </motion.div>
+    </div>
+  );
 
   return (
     <div className="app-container">
@@ -119,30 +125,28 @@ function App() {
           />
         )}
 
-        {/* CADEADO PARENTAL (PIN) */}
+        {/* CADEADO PARENTAL (PIN) MODERNIZADO */}
         {showPinModal && (
-          <div className="modal-overlay" style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-          }}>
+          <div className="overlay glass" style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="card" 
-              style={{ width: '300px', padding: '2rem', textAlign: 'center' }}
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="island-card" 
+              style={{ width: '100%', maxWidth: '340px', textAlign: 'center' }}
             >
-              <h2 style={{ marginBottom: '1rem' }}>🔐 ÁREA DOS PAIS</h2>
-              <p style={{ marginBottom: '1.5rem', fontWeight: 'bold' }}>Digite sua senha (PIN):</p>
+              <h2 style={{ fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>🔐 ÁREA DOS PAIS</h2>
+              <p style={{ marginBottom: '1.5rem', fontWeight: '500', color: 'var(--tertiary)' }}>Confirme o seu PIN para entrar:</p>
               
               <input 
                 type="password" 
                 maxLength={4} 
                 autoFocus
                 placeholder="****"
+                className="btn-secondary"
                 style={{
-                  width: '100%', padding: '1rem', fontSize: '2rem', textAlign: 'center',
-                  background: '#f1f5f9', border: '3px solid #cbd5e1', borderRadius: '12px',
-                  marginBottom: '1.5rem'
+                  width: '100%', padding: '1.2rem', fontSize: '2rem', textAlign: 'center',
+                  background: 'var(--surface-low)', border: 'none', marginBottom: '2rem',
+                  letterSpacing: '0.5rem'
                 }}
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
@@ -152,15 +156,15 @@ function App() {
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <button 
                   onClick={() => setShowPinModal(false)}
-                  className="btn-secondary" style={{ flex: 1, background: '#94a3b8' }}
+                  className="btn-secondary" style={{ flex: 1 }}
                 >
-                  CANCELAR
+                  VOLTAR
                 </button>
                 <button 
                   onClick={verifyPin}
                   className="btn-primary" style={{ flex: 1 }}
                 >
-                  ENTRAR
+                  OK
                 </button>
               </div>
             </motion.div>
@@ -229,3 +233,4 @@ function App() {
 }
 
 export default App;
+

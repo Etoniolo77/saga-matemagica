@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { gameManager } from '../game_logic';
 import Numpad from './Numpad';
 import { settingsService } from '../services/SettingsService';
@@ -14,27 +14,22 @@ const QuestCard = ({ question, onNext, syncStats, balance, remainingSkips, onOpe
     if (overlay || isSubmitShake) return;
     
     const result = gameManager.handleAnswer(question, answer);
-    syncStats(); // Atualiza o saldo no App.jsx
+    syncStats(); 
     
     if (result.success) {
-      if (result.isLevelUp) {
-        setOverlay('levelup');
-      } else {
-        setOverlay(result.isCombo ? 'combo' : 'success');
-      }
-      
+      setOverlay(result.isLevelUp ? 'levelup' : (result.isCombo ? 'combo' : 'success'));
       setTimeout(() => {
         setOverlay(null);
         setUserAnswer('');
         onNext(); 
-      }, result.isLevelUp ? 3000 : 2000); // 3 Segundos no level up
+      }, result.isLevelUp ? 3000 : 1500);
     } else {
       setIsSubmitShake(true);
       setOverlay('error');
       setTimeout(() => {
         setIsSubmitShake(false);
         setOverlay(null);
-      }, 1500); 
+      }, 1200); 
     }
   };
 
@@ -43,153 +38,179 @@ const QuestCard = ({ question, onNext, syncStats, balance, remainingSkips, onOpe
       window.speechSynthesis.cancel();
       const msg = new SpeechSynthesisUtterance(question.statement_text);
       msg.lang = 'pt-BR';
-      msg.rate = 0.9;
+      msg.rate = 0.95;
       window.speechSynthesis.speak(msg);
     }
   };
 
-  const handleSkip = () => {
-    const result = gameManager.skipQuestion();
-    if (result.success) {
-      onNext();
-    } else {
-      alert(result.msg);
-    }
-  };
-
-  const renderActiveMiniGame = () => {
-    if (question.input_type === 'multiple_choice') {
-      return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
-          {question.options.map((opt, i) => (
-            <button 
-              key={i} 
-              onClick={() => handleAnswer(opt)}
-              className="btn-secondary"
-              style={{ padding: '1.2rem', fontSize: '1.1rem', background: '#FFF', color: '#000', textTransform: 'none' }}
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
-
   const getSubjectColor = () => {
     switch (question.subject) {
-      case 'Matemática': return '#f0f9ff';
-      case 'Português': return '#fff1f2';
-      case 'Ciências': return '#f0fdf4';
-      case 'História': return '#fff7ed';
-      case 'Geografia': return '#f5f3ff';
-      default: return '#FFF';
+      case 'Matemática': return 'var(--primary)';
+      case 'Português': return 'var(--secondary)';
+      case 'Ciências': return '#00d2ff';
+      case 'História': return '#ffab00';
+      default: return 'var(--primary)';
+    }
+  };
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionClick = (opt) => {
+    setSelectedOption(opt);
+    // Pequeno feedback sonoro ou vibração poderia entrar aqui
+  };
+
+  const handleConfirm = () => {
+    if (question.input_type === 'multiple_choice') {
+      if (selectedOption) handleAnswer(selectedOption);
+    } else {
+      if (userAnswer) handleAnswer(userAnswer);
     }
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="screen"
-      style={{
-        background: getSubjectColor(),
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        paddingTop: '2rem'
-      }}>
-      
-      <div style={{ width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem' }}>
-        <div className="hud-item" style={{ fontSize: '2rem', background: '#FFF' }}>
-          💰 R$ {balance.toFixed(2).replace('.', ',')}
+    <div className="app-container fade-in" style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* HUD v2.0 */}
+      <div className="hud-bar glass" style={{ margin: '1rem', borderRadius: '50px', padding: '0.8rem 1.5rem', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ width: '45px', height: '45px', borderRadius: '50%', border: '2px solid var(--primary)', overflow: 'hidden', background: '#000' }}>
+            <img src={config.selectedAvatar || 'https://tr.rbxcdn.com/38c61c33c3a07af892523271d7d9179d/420/420/Avatar/Png'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Avatar" />
+          </div>
+          <div style={{ fontSize: '0.9rem', fontWeight: '800', color: 'var(--primary)' }}>Lvl {config.journey.level}</div>
         </div>
         
-        <div className="hud-item" style={{ fontSize: '1.2rem', background: '#00B2FF', color: '#FFF' }}>
-          ⭐ PONTOS: {config.journey.score}
-        </div>
-        
-        <div style={{ width: '100%', maxWidth: '350px', textAlign: 'left', marginBottom: '0.2rem', display: 'flex', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>XP DO NÍVEL:</span>
-          <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#00E676' }}>{config.journey.currentXP || 0}/{gameManager.getXPToNextLevel(config.journey.level)}</span>
-        </div>
-        <div style={{ width: '100%', maxWidth: '350px', height: '24px', background: '#000', border: '4px solid #000', position: 'relative', overflow: 'hidden' }}>
-          <motion.div 
-            animate={{ width: `${((config.journey.currentXP || 0) / gameManager.getXPToNextLevel(config.journey.level)) * 100}%` }}
-            transition={{ type: 'spring', damping: 15 }}
-            style={{ height: '100%', background: '#00E676', borderRight: '4px solid #000' }}
-          />
-        </div>
-        <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-           <span style={{ fontSize: '1rem', fontWeight: '900', background: '#000', color: '#FFF', padding: '2px 8px' }}>NÍVEL {config.journey.level}</span>
-           <span style={{ fontSize: '0.8rem', color: '#666' }}>({config.journey.totalXP} XP ACUMULADO)</span>
+        <div className="stat-pill" style={{ background: 'rgba(0,0,0,0.3)', border: 'none' }}>
+          <div className="stat-icon" style={{ background: '#ffd700', color: '#000', fontWeight: '900', fontSize: '0.9rem' }}>R$</div>
+          <span style={{ color: '#ffd700', fontSize: '1.2rem' }}>{balance.toFixed(0)}</span>
         </div>
       </div>
 
-      <motion.div 
-        animate={isSubmitShake ? { x: [-10, 10, -10, 10, 0] } : {}}
-        className="card" 
-        style={{ width: '90%', maxWidth: '480px', padding: '1.5rem', textAlign: 'center' }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-          <h2 style={{ fontSize: '1.4rem', margin: 0 }}>{question.statement_text}</h2>
-          <button onClick={handleAudio} style={{ width: '45px', height: '45px', borderRadius: '50%', background: '#00B2FF', fontSize: '1.2rem' }}>🔊</button>
-        </div>
-
-        {renderActiveMiniGame()}
-
-        {question.input_type !== 'multiple_choice' && (
-          <>
-            <div className="input-field" style={{ fontSize: '2.5rem', padding: '0.8rem', marginBottom: '1rem', background: '#f8fafc' }}>
-              {userAnswer || '?'}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 1.5rem', width: '100%', maxWidth: '500px', margin: '0 auto' }}>
+        <div style={{ width: '100%' }}>
+          {/* GALACTIC PROGRESS */}
+          <div style={{ marginBottom: '2rem', padding: '0 0.5rem' }}>
+            <div style={{ height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', overflow: 'hidden' }}>
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${((config.journey.currentXP || 0) / gameManager.getXPToNextLevel(config.journey.level)) * 100}%` }}
+                style={{ height: '100%', background: 'var(--primary)', boxShadow: '0 0 15px var(--primary)' }}
+              />
             </div>
-            <Numpad onUpdate={(v) => setUserAnswer(v)} current={userAnswer} />
-            <button 
-              onClick={() => handleAnswer(userAnswer)}
-              className="btn-primary" 
-              style={{ width: '100%', marginTop: '1rem' }}
-            >
-              CONFIRMAR ✅
-            </button>
-          </>
-        )}
+          </div>
 
-        <div style={{ display: 'flex', gap: '0.8rem', marginTop: '2rem', flexWrap: 'wrap' }}>
-          <button onClick={onOpenStore} className="btn-secondary" style={{ flex: 1, background: '#FFAB00', minWidth: '100px' }}>🛒 LOJA</button>
-          <button onClick={onOpenBank} className="btn-secondary" style={{ flex: 1, background: '#00B2FF', minWidth: '100px' }}>🏦 BANCO</button>
-          <button 
-            onClick={onSkip} 
-            className="btn-secondary" 
-            style={{ flex: 1, background: '#A020F0', minWidth: '100px', opacity: remainingSkips > 0 ? 1 : 0.5 }}
+          <motion.div 
+            animate={isSubmitShake ? { x: [-10, 10, -10, 10, 0] } : {}}
+            className="island-card"
+            style={{ marginBottom: '1rem' }}
           >
-            ⏩ PULAR ({remainingSkips})
-          </button>
-        </div>
+            <div className="question-title">
+               <span style={{ color: getSubjectColor(), display: 'block', fontSize: '0.85rem', marginBottom: '0.8rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                 {question.subject}
+               </span>
+              {question.statement_text}
+            </div>
 
-        <div style={{ display: 'flex', gap: '0.8rem', marginTop: '1rem' }}>
-          <button onClick={onChangeSubject} className="btn-secondary" style={{ flex: 2, background: '#64748b' }}>📚 TROCAR MATÉRIA</button>
-          <button onClick={onExit} className="btn-secondary" style={{ flex: 1, background: '#ef4444' }}>🏠 SAIR</button>
-        </div>
-      </motion.div>
+            {question.input_type === 'multiple_choice' ? (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
+                {question.options.map((opt, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => handleOptionClick(opt)}
+                    className="btn-secondary"
+                    style={{ 
+                      padding: '1.2rem', 
+                      fontSize: '1.1rem',
+                      justifyContent: 'flex-start',
+                      background: selectedOption === opt ? 'rgba(107, 254, 156, 0.15)' : 'rgba(255,255,255,0.03)',
+                      borderColor: selectedOption === opt ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
+                      boxShadow: selectedOption === opt ? '0 0 15px rgba(107, 254, 156, 0.2)' : 'none'
+                    }}
+                  >
+                    <div style={{ 
+                      marginRight: '1rem', 
+                      background: selectedOption === opt ? 'var(--primary)' : 'var(--surface-high)', 
+                      color: selectedOption === opt ? 'var(--on-primary)' : '#FFF',
+                      width: '30px', height: '30px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: '800' 
+                    }}>
+                      {String.fromCharCode(65 + i)}
+                    </div> 
+                    {opt}
+                  </button>
+                ))}
 
-      {overlay && (
-        <div className="overlay" style={{ background: 'rgba(255,255,255,0.96)', zIndex: 1000, position: 'fixed', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-          {overlay === 'levelup' ? (
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
-              <img src="/roblox_treasure_chest_unlocked.png" style={{ width: '300px', marginBottom: '1rem' }} alt="Chest" />
-              <h1 style={{ fontSize: '4rem', color: '#FFAB00', textShadow: '4px 4px #000' }}>LEVEL {config.journey.level} UNLOCKED! 🏆</h1>
-              <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Você abriu o baú de recompensas!</p>
-            </motion.div>
-          ) : (
-            <>
-              <img src={config.selectedAvatar} style={{ width: '200px', height: '200px', border: '10px solid #00E676', borderRadius: '40px', marginBottom: '2rem' }} alt="Avatar" />
-              <h1 style={{ fontSize: '4rem', color: overlay === 'error' ? '#ef4444' : '#00E676' }}>
-                {overlay === 'success' ? 'BOAAA! 🔥' : overlay === 'combo' ? 'SURREAL! 🚀' : 'QUASE LÁ! 💡'}
-              </h1>
-            </>
-          )}
+                <button 
+                  onClick={handleConfirm}
+                  disabled={!selectedOption}
+                  className="btn-primary" 
+                  style={{ marginTop: '1.5rem', opacity: selectedOption ? 1 : 0.4 }}
+                >
+                  CONFIRMAR RESPOSTA ✅
+                </button>
+              </div>
+            ) : (
+              <div className="fade-in">
+                <div style={{ fontSize: '4rem', fontWeight: '900', color: 'var(--primary)', marginBottom: '1.5rem', textAlign: 'center' }}>
+                  {userAnswer || '?'}
+                </div>
+                <Numpad onUpdate={(v) => setUserAnswer(v)} current={userAnswer} />
+                <button 
+                  onClick={handleConfirm}
+                  disabled={!userAnswer}
+                  className="btn-primary" 
+                  style={{ marginTop: '2.5rem', opacity: userAnswer ? 1 : 0.4 }}
+                >
+                  CONFIRMAR RESPOSTA ✅
+                </button>
+              </div>
+            )}
+          </motion.div>
+
+          {/* UTILITY BAR */}
+          <div style={{ display: 'flex', gap: '0.8rem', opacity: 0.8 }}>
+            <button onClick={onOpenStore} className="btn-secondary" style={{ flex: 1, fontSize: '0.75rem' }}>🛒 LOJA</button>
+            <button onClick={onOpenBank} className="btn-secondary" style={{ flex: 1, fontSize: '0.75rem' }}>🏦 BANCO</button>
+            <button onClick={onExit} className="btn-secondary" style={{ flex: 1, fontSize: '0.75rem', color: '#ef4444' }}>🏠 SAIR</button>
+          </div>
         </div>
-      )}
-    </motion.div>
+      </div>
+
+
+
+
+      {/* OVERLAY SENSORIAL */}
+      <AnimatePresence>
+        {overlay && (
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            className="overlay glass" 
+            style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          >
+            {overlay === 'levelup' ? (
+              <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
+                <div style={{ fontSize: '6rem', marginBottom: '1rem' }}>🏆</div>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '3rem', color: 'var(--primary)' }}>NÍVEL {config.journey.level}!</h1>
+                <p style={{ fontWeight: 'bold' }}>Você subiu de rank!</p>
+              </motion.div>
+            ) : (
+              <motion.div initial={{ y: 50 }} animate={{ y: 0 }}>
+                <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>
+                  {overlay === 'success' ? '🌟' : overlay === 'combo' ? '🔥' : '💡'}
+                </div>
+                <h1 style={{ 
+                  fontFamily: 'var(--font-display)', 
+                  fontSize: '3.5rem', 
+                  color: overlay === 'error' ? '#dc2626' : 'var(--primary)' 
+                }}>
+                  {overlay === 'success' ? 'EXCELENTE!' : overlay === 'combo' ? 'SURREAL!' : 'TENTE DE NOVO!'}
+                </h1>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
